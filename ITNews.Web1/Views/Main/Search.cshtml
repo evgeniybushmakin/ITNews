@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ITNews.Web1.Models.SearchViewModel>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Search results</h2>
+
+<br/>
+ @{int i = 1;
+
+@foreach (var item in Model)
+{
+
+    <div>
+        <a href="@Url.Action("Details", "Main", new { Id = item.Id })"><h4>@i. @item.Title</h4></a>
+    </div>
+    <div>
+        @Html.Label(item.Content)
+    </div>
+   
+    i++;
+
+}
+     }
+<br />
+<br />
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>
+

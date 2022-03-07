@@ -1,0 +1,72 @@
+﻿@model ITNews.Web1.Models.PostViewModel
+@using Syncfusion.EJ2
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Изменить</h2>
+
+<hr />
+
+<head>
+    <script src="~/js/autocomplete.js"></script>
+</head>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <div>
+                    Категория
+                </div>
+                @Html.DropDownListFor(x => x.CategoryId, ViewBag.Categories as SelectList)
+            </div>
+
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Заголовок</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ShortDiscription" class="control-label">Краткое описание</label>
+                <input asp-for="ShortDiscription" class="form-control" />
+                <span asp-validation-for="ShortDiscription" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            @Html.EJS().RichTextEditor("Content").ToolbarSettings(e => e.Items((object)ViewBag.items)).InsertImageSettings(obj => obj.Display("inline").SaveUrl("/Post/SaveFile").Path("/Images/")).Value(Model.Content).Render()
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="Published" /> Публичность
+            </label>
+        </div>
+    </div>
+
+    <div class="ui-widget">
+        <label asp-for="Tag.Content" class="control-label">Теги</label>
+        <input asp-for="Tag.Content" id="tags" class="form-control" />
+    </div>
+    <br/>
+
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-default" />
+    </div>
+</form>
+
+
+<div>
+    @Html.ActionLink("На главную", "Index", "Post") 
+</div>
+

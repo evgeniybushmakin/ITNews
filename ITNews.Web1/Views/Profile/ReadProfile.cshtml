@@ -1,0 +1,35 @@
+﻿@model ITNews.Web1.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h2>Профиль</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="Main">На главную</a>
+</div>

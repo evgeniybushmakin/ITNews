@@ -1,0 +1,128 @@
+﻿@using Syncfusion.EJ2
+@inject IHttpContextAccessor httpContextAccessor
+
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+    @* Syncfusion Essential JS 2 Styles *@
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
+    @* Syncfusion Essential JS 2 Scripts *@
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ITNews</title>
+
+
+    @{
+        if (httpContextAccessor.HttpContext.Request.Cookies.ContainsKey("theme"))
+        {
+            var theme = httpContextAccessor.HttpContext.Request.Cookies["theme"].ToString();
+            if (theme != null && theme == "Светлая")
+            {
+                <environment include="Development">
+                        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-light.css" />
+                        <link rel="stylesheet" href="~/css/site.css" />
+                    </environment>
+            }
+            if (theme != null && theme == "Тёмная")
+            {
+                <environment include="Development">
+                        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-dark.css" />
+                        <link rel="stylesheet" href="~/css/site.css" />
+                    </environment>
+            }
+
+        }
+    }
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Система навигации</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ITNews</a>
+            </div>
+            <div class="navbar-collapse collapse" id="panel">
+                <ul class="nav navbar-nav">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="" asp-controller="Main" asp-action="Index">Главная</a></li>
+                        <li><a asp-area="" asp-controller="Post" asp-action="Index">Мои публикации</a></li>
+                        <li><a asp-area="" asp-controller="Profile" asp-action="Index">Мой профиль</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Main" asp-action="Index">Главная</a></li>
+                    }
+                </ul>
+                <partial name="_LoginPartial" />
+                <div class="col-md-2 col-md-offset-3" style="margin-top:10px">
+                    <select name="theme" id="theme" class="form-control">
+                        <option value="0">Сменить тему</option>
+                        <option value="1">Тёмная</option>
+                        <option value="2">Светлая</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2022 - ITNews</p>
+        </footer>
+    </div>
+
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+    </environment>
+    <script src="~/js/themes.js"></script>
+    @RenderSection("Scripts", required: false)
+
+    @Html.EJS().ScriptManager()
+
+</body>
+</html>

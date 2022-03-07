@@ -1,0 +1,182 @@
+﻿@model ITNews.Web1.Models.PostViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+<head>
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+
+</head>
+<div>
+
+    <hr />
+
+    <dl class="dl-horizontal">
+        <dt>
+            <input type="hidden" id="postId" value="@Model.Id" />
+            <input type="hidden" id="userId" value="@ViewBag.UserId" />
+        </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dd>
+            @Html.Raw(Model.Content)
+        </dd>
+    </dl>
+    <div class="row">
+        <div class=" col-md-2">
+
+        </div>
+        <div class="col-md-6">
+
+            @if (Model.FullName.LastName == null || Model.FullName.FirstName == null)
+
+            {
+                <p><span><strong>Пост создан @Model.Created.ToShortDateString()</strong></span> </p> <p><span> <strong> Автор: @Model.User.UserName</strong></span> </p>
+            }
+            else
+            {
+                <p><span><strong>Пост создан @Model.Created.ToShortDateString()</strong></span> </p> <p><span> <strong> Автор: @Model.FullName.FirstName @Model.FullName.LastName </strong></span></p>
+            }
+        </div>
+    </div>
+</div>
+
+<div>
+    <script src="~/js/star-rating.js"></script>
+    <link href="~/css/star-rating.css" rel="stylesheet" />
+</div>
+
+
+<br />
+<div>
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-2">
+                <div class="AmountRating">
+                    <span id="ratingAmount"> Общий рейтинг: @Model.Rating</span>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="ratings">
+                    <input type="radio" name="star" class="rating" value="1" />
+                    <input type="radio" name="star" class="rating" value="2" />
+                    <input type="radio" name="star" class="rating" value="3" />
+                    <input type="radio" name="star" class="rating" value="4" />
+                    <input type="radio" name="star" class="rating" value="5" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.ratings').rating(function (vote, event) {
+        $.ajax({
+            url: '/main/rating',
+            data: { vote: vote, postId:@Model.Id },
+            success: function () {
+                document.getElementById("ratingAmount").innerHTML = "Общий рейтинг:" + (parseInt(@Model.Rating)+parseInt(vote)).toString();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 403) {
+                    alert("Вы уже поставили оценку");
+                    $('.ratings').hide();
+                }
+                if (XMLHttpRequest.status == 401) {
+                    alert("Необходимо авторизоваться, для выполнения данного действия");
+                    $('.ratings').hide();
+                }
+
+            }
+        })
+    })
+
+</script>
+
+
+<div class="container">
+    <div class="row">
+        <h3>Комментарии</h3>
+        <div class="col-md-2" style="padding-left:unset"><h5>Добавьте свой комментарий</h5></div>
+        <div class="col-md-6">
+            <input type="hidden" id="userName" value=@ViewBag.Username />
+            <textarea rows="4" cols="50" id="messageInput"></textarea>
+            <div>
+                <input type="button" id="sendButton" value="Добавить" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <script>
+        const like = (commentId, e) => {
+            $.ajax({
+                url: '/main/like?commentId=' + commentId,
+                success: (data) => {
+                    var likeButton = data.isLiked ? "info" : "default";
+                    $(e.target.closest('.btn-sm')).attr('class', 'btn btn-' + likeButton + ' btn-sm');
+                    $(e.target.closest('.btn-sm').querySelector('span')).text(data.likeAmount)
+                }
+            });
+
+        }
+    </script>
+    <div class="comments">
+        @await Component.InvokeAsync("Comments", new { id = Model.Id, userId = ViewBag.UserId })
+    </div>
+
+    <div id="target"></div>
+
+    <script id="hidden-template" type="text/x-custom-template">
+        <div class="container">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <section class="post-heading">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <a href="@Url.Action("ReadProfile", "Profile", new {profileId = Model.User.ProfileId})" class="anchor-username"><h6 class="media-heading">@Model.User.UserName </h6></a>
+                                            <span>@DateTime.Now.ToShortDateString()</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="post-body"><br /> <p id="content">комментарий</p></section>
+                        <input type="hidden" id="commentId" value="1" />
+                        <section class="post-footer" style="margin:unset">
+                            <div class="post-footer-option container">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <button type="button" id="buttonId" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-thumbs-up" id="count">0</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>
+
+
+
+<div>
+    <script src="~/js/test.js"></script>
+</div>
+<br />
+<div>
+    <a asp-action="Index">На главную</a>
+</div>

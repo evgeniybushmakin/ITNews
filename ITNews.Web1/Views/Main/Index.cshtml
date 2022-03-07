@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ITNews.Web1.Models.MainPostViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br/>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-9">
+            <div class="search-posts">
+                @using (Html.BeginForm("Search", "Main", FormMethod.Post))
+                {
+                    @Html.TextBox("search", "", new { placeholder = "Введите заголовок..." })
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-3">
+                    <h2>Теги</h2>
+                    <br />
+                    <div class="tags">
+                        @await Component.InvokeAsync("Tags")
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h2>Новые публикации</h2>
+                    <br />
+                    <!-- Blog Content -->
+                    @foreach (var item in Model)
+                    {
+                        <div class="single-blog-content">
+                            <div class="post-title align-self-center">
+                                <h3><a href="/Main/Details/@item.Id" class="post-headline">@item.Title</a></h3>
+                            </div>
+                            <p>@item.ShortDiscription</p>
+                            <div class="post-meta">
+                                @if (string.IsNullOrEmpty(item.FullName.LastName) || string.IsNullOrEmpty(item.FullName.FirstName))
+
+                                {
+                                    <p>By <span>@item.User.UserName</span> </p>
+                                }
+                                else
+                                {
+                                    <p>By <span>@item.FullName.FirstName @item.FullName.LastName</span> </p>
+                                }
+
+                                <span class="post-category"><strong>Категория:</strong> @item.Category.Name</span>
+                                <div class="post-date">
+                                    <strong>Создан:</strong>  @item.Created.ToShortDateString()
+                                </div>
+                                <div class="post-rating">
+                                    <span><strong>Рейтинг:</strong> @item.Rating</span>
+                                </div>
+                                <p>Комментарии: @item.CommentsCount</p>
+                            </div>
+                            <a href="/Main/Details/@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Читать больше</a>
+                        </div>
+                    }
+                </div>
+                
+                <h2>Пять самых популярныхх публикаций</h2>
+                <div class="col-12 col-md-3">
+                    <div class="popular-posts">
+                        @await Component.InvokeAsync("PopularPosts")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        

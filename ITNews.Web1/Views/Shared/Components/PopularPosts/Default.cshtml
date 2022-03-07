@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ITNews.Web1.Models.MainPostViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="single-blog-content">
+        <div class="post-title align-self-center">
+            <h3><a href="/Main/Details/@item.Id" class="post-headline">@item.Title</a></h3>
+        </div>
+        <p>@item.ShortDiscription</p>
+        <div class="post-meta">
+            <p>By <span>@item.User.UserName</span> </p>
+            <span class="post-category"><strong>Категория:</strong> @item.Category.Name</span>
+            <div class="post-date">
+                <strong>Created:</strong>  @item.Created.ToShortDateString()
+            </div>
+            <div class="post-rating">
+                <span><strong>Рейтинг:</strong> @item.Rating</span>
+            </div>
+            <p>Комментарии: @item.CommentsCount</p>
+        </div>
+        <a href="/Main/Details/@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Читать больше</a>
+    </div>
+}

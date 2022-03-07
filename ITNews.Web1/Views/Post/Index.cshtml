@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ITNews.Web1.Models.PostViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Мои посты</h2>
+
+<p>
+    <a asp-action="Create">Создать новый</a>
+</p>
+
+<head>
+    <script src="~/js/sort1.js"></script>
+    <script src="~/js/filter.js"></script>
+</head>
+<div>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Искать по заголовкам">
+</div>
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+
+            <th>
+                <a href="javascript:SortTable(0,'T');">Заголовок</a>
+            </th>
+
+            <th>
+                <a href="javascript:SortTable(1,'T');">Категория</a>
+            </th>
+
+            <th>
+                <a href="javascript:SortTable(2,'D','mdy');">Создан</a>
+
+            </th>
+
+            <th><a href="javascript:SortTable(3,'D','mdy');">Обновлён</a> </th>
+
+            <th><a href="javascript:SortTable(4,'N');">Публичность</a></th>
+
+            <th><a href="javascript:SortTable(5,'N');">Рейтинг</a></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Published)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Изменить", "Edit", new { postId = item.Id }) |
+                    @Html.ActionLink("Детали", "Details", "Main", new { id = item.Id }) |
+                    @Html.ActionLink("Удалить", "Delete", new { postId = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

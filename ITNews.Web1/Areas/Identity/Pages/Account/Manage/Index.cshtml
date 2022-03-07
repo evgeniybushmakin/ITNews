@@ -1,0 +1,76 @@
+﻿@page
+@using ITNews.Web1.Models
+@model ITNews.Web1.Models.ProfileViewModel
+
+@*@{
+    ViewData["Title"] = "Profile";
+}*@
+@{ 
+    var profile = (ProfileViewModel)ViewData["profile"];
+}
+<h2>Index</h2>
+<div>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="~/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="~/js/editing.js"></script>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <a href="#" id="firstName" data-type="text" data-pk="@profile.Id"
+                   data-url="@Url.Action("ChangeFirstname", "Profile")"
+                   data-title="Enter firstname">@profile.FirstName</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <a href="#" id="lastName" data-type="text" data-pk="@profile.Id"
+                   data-url="@Url.Action("ChangeLastname", "Profile")"
+                   data-title="Enter lastname">@profile.LastName</a>
+            </div>
+            <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <a href="#" id="city" data-type="text" data-pk="@Model.Id"
+                       data-url="@Url.Action("ChangeCity", "Profile")"
+                       data-title="Enter city">@Model.City</a>
+                </div>
+
+
+            
+
+                @*<div class="form-group">
+                    <label asp-for="Country" class="control-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"></label>
+                    <input asp-for="Avatar" class="form-control" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserId" class="control-label"></label>
+                    <input asp-for="UserId" class="form-control" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>*@
+                @*<div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>*@
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Main" asp-action="Index">Вернуться на главную</a>
+</div>
+
+
+
+

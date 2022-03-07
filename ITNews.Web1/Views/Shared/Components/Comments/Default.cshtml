@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ITNews.Web1.Models.CommentViewModel>
+
+    @foreach (var item in Model)
+    {
+        string likeButton = item.UserLike ? "info" : "default";
+        <div class="container">
+            <input type="hidden" value="@item.Id" />
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <section class="post-heading">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            @if (item.FullName.LastName == null || item.FullName.FirstName == null)
+
+                                            {
+                                                <a href="@Url.Action("ReadProfile", "Profile", new {profileId = item.User.ProfileId})" class="anchor-username"><h6 class="media-heading">@item.User.UserName </h6></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("ReadProfile", "Profile", new {profileId = item.User.ProfileId})" class="anchor-username"><h6 class="media-heading">@item.FullName.FirstName @item.FullName.LastName </h6></a>
+                                            }
+                                            <span>@item.Created.ToShortDateString()</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="post-body"><br /> <p id="content">@item.Content</p></section>
+                        <section class="post-footer">
+                            <div class="post-footer-option container">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <button type="button" onclick="((event) => like(@item.Id, event))(event)" class="btn btn-@likeButton btn-sm">
+                                            <span class="glyphicon glyphicon-thumbs-up">@item.Count</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+}
+
+
+
+

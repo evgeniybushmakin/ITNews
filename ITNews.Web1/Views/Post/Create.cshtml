@@ -1,0 +1,73 @@
+﻿@using Syncfusion.EJ2
+@model ITNews.Web1.Models.PostViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Создание</h2>
+
+<hr />
+<head>   
+    <script src="~/js/autocomplete.js"></script>
+</head>
+<div class="row">
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div>
+                    <label asp-for="Category" class="control-label">Категория</label>
+                </div>
+                @Html.DropDownListFor(x => x.CategoryId, ViewBag.Categories as SelectList)
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Заголовок</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ShortDiscription" class="control-label">Краткое описание</label>
+                <input asp-for="ShortDiscription" class="form-control" />
+                <span asp-validation-for="ShortDiscription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                @Html.EJS().RichTextEditor("Content").ToolbarSettings(e => e.Items((object)ViewBag.items)).InsertImageSettings(obj => obj.Display("inline").SaveUrl("/Post/SaveFile").Path("/Images/")).Value((string)ViewBag.value).Render()
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="Published" />Публичность
+                </label>
+            </div>
+        </div>
+        
+        <div>
+
+            <div class="ui-widget">
+                <label asp-for="Tag.Content" class="control-label">Теги</label>
+                <input asp-for="Tag.Content" id="tags" class="form-control" />
+                @*<span asp-validation-for="Tag.Content" class="text-danger"></span>*@
+            </div>
+        </div>
+        <br/>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Создать" class="btn btn-default" />
+        </div>
+    </form>
+
+</div>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>
+
+
+

@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ITNews.Web1.Models.CloudTags>
+
+
+@foreach (var item in Model)
+
+{
+    if (item.Count >= 0 && item.Count < 2)
+    {
+        <a href="@Url.Action("TagLink", "Main", new { tagId = item.Id})"><h6>@item.Content</h6></a>
+    }
+    
+    if (item.Count >= 2 && item.Count <= 4)
+    {
+        <a href="@Url.Action("TagLink", "Main", new { tagId = item.Id})"><h4>@item.Content</h4></a>    
+    }
+    
+    if (item.Count > 4)
+    {
+        <a href="@Url.Action("TagLink", "Main", new { tagId = item.Id})"><h2>@item.Content</h2></a>
+    }
+
+}
